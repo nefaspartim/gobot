@@ -4,6 +4,7 @@ import (
 	"flag"
 	"log"
 
+	"github.com/gabeguz/gobot"
 	"github.com/gabeguz/gobotplugin"
 	"github.com/gabeguz/xmppbot"
 )
@@ -38,7 +39,7 @@ func main() {
 		log.Fatalln(err)
 	}
 	go bot.PingServer(30)
-	var msg xmppbot.Message
+	var msg gobot.Message
 	var plugin gobotplugin.Plugin
 	for msg = range bot.Listen() {
 		for _, plugin = range bot.Plugins {
@@ -48,7 +49,7 @@ func main() {
 
 }
 
-func executePlugin(p gobotplugin.Plugin, m xmppbot.Message, b xmppbot.Bot) {
+func executePlugin(p gobotplugin.Plugin, m gobot.Message, b gobot.Bot) {
 	err := p.Execute(m, b)
 	if err != nil {
 		b.Log(p.Name() + " => " + err.Error())
@@ -56,6 +57,6 @@ func executePlugin(p gobotplugin.Plugin, m xmppbot.Message, b xmppbot.Bot) {
 }
 
 type Gobot struct {
-	xmppbot.Bot
+	gobot.Bot
 	Plugins []gobotplugin.Plugin
 }
