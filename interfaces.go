@@ -21,3 +21,8 @@ type Message interface {
 	Body() string
 	From() string
 }
+
+type Plugin interface {
+	Name() string
+	Execute(msg Message, bot Bot) error
+}
