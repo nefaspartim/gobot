@@ -8,7 +8,7 @@ import (
 type Bot interface {
 	Name() string
 	FullName() string
-	Send(msg string)
+	Send(msg Message)
 	Connect() error
 	PingServer(time.Duration)
 	Listen() chan Message

@@ -6,7 +6,7 @@ import (
 
 	"github.com/gabeguz/gobot"
 	"github.com/gabeguz/gobotplugin"
-	"github.com/gabeguz/xmppbot"
+	"github.com/gabeguz/slackbot"
 )
 
 func main() {
@@ -21,8 +21,8 @@ func main() {
 	//TODO:Add some validation...but whatever for now
 
 	bot := Gobot{
-		xmppbot.New(host, user, pass, room, name),
-		[]gobotplugin.Plugin{
+		slackbot.New(host, user, pass, room, name),
+		[]gobot.Plugin{
 			gobotplugin.Echo{},
 			gobotplugin.Beer{},
 			gobotplugin.Quote{},
@@ -40,7 +40,7 @@ func main() {
 	}
 	go bot.PingServer(30)
 	var msg gobot.Message
-	var plugin gobotplugin.Plugin
+	var plugin gobot.Plugin
 	for msg = range bot.Listen() {
 		for _, plugin = range bot.Plugins {
 			go executePlugin(plugin, msg, bot)
@@ -49,7 +49,7 @@ func main() {
 
 }
 
-func executePlugin(p gobotplugin.Plugin, m gobot.Message, b gobot.Bot) {
+func executePlugin(p gobot.Plugin, m gobot.Message, b gobot.Bot) {
 	err := p.Execute(m, b)
 	if err != nil {
 		b.Log(p.Name() + " => " + err.Error())
@@ -58,5 +58,5 @@ func executePlugin(p gobotplugin.Plugin, m gobot.Message, b gobot.Bot) {
 
 type Gobot struct {
 	gobot.Bot
-	Plugins []gobotplugin.Plugin
+	Plugins []gobot.Plugin
 }
